@@ -15,7 +15,7 @@ const MyTabs = () => {
       tabBar={(props) => <CustomTabs {...props} />}>
       <Tab.Screen name='Home' component={HomePage} />
       <Tab.Screen name='Favorites' component={FavoritesPage} />
-      <Tab.Screen name='Basket' component={BasketPage} />
+      {/* <Tab.Screen name='Basket' component={BasketPage} /> */}
     </Tab.Navigator>
   );
 };
