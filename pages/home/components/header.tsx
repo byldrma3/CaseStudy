@@ -10,9 +10,19 @@ import { AlignLeft, Filter, Search } from "react-native-feather";
 
 interface HomeHeaderProps {
   size?: number;
+  searchText?: string;
+  setSearchText: (text: string) => void;
+  handleSearch?: () => void;
+  handleSortByPrice?: () => void;
 }
 
-const HomeHeader = ({ size = undefined }: HomeHeaderProps) => {
+const HomeHeader = ({
+  size = undefined,
+  searchText,
+  setSearchText,
+  handleSearch,
+  handleSortByPrice,
+}: HomeHeaderProps) => {
   return (
     <View>
       <Text style={styles.title}>
@@ -21,13 +31,22 @@ const HomeHeader = ({ size = undefined }: HomeHeaderProps) => {
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Search width={13} height={13} color={"#B9B9B9"} />
-          <TextInput placeholder='Search Product' style={styles.input} />
+          <TextInput
+            placeholder='Search Product'
+            style={styles.input}
+            value={searchText}
+            onChange={(e) => setSearchText(e.nativeEvent.text)}
+          />
         </View>
-        <TouchableOpacity style={[styles.btnContainer, { marginRight: 8 }]}>
+        <TouchableOpacity
+          style={[styles.btnContainer, { marginRight: 8 }]}
+          onPress={handleSearch}>
           <Filter width={13} height={13} color={"#B9B9B9"} />
           <Text style={styles.btnText}>Filter</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnContainer}>
+        <TouchableOpacity
+          style={styles.btnContainer}
+          onPress={handleSortByPrice}>
           <AlignLeft width={13} height={13} color={"#B9B9B9"} />
           <Text style={styles.btnText}>Sort</Text>
         </TouchableOpacity>

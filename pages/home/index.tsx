@@ -5,7 +5,7 @@ import HomeHeader from "./components/header";
 import Card from "../../components/card";
 import { useAxios } from "../../hook/useAxios";
 import { ApiRoutes } from "../../api/apiRoutes";
-import { ProductData } from "../../types";
+import { ProductData, Product } from "../../types";
 import { Spinner } from "../../components/spinner";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParamList } from "../../navigators/BottomTabs";
@@ -15,10 +15,32 @@ type HomePageProps = {
 };
 
 const HomePage = ({ navigation }: HomePageProps) => {
-  const [loading, data, error] = useAxios<ProductData>({
+  const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">(
+    "asc"
+  );
+  const [searchText, setSearchText] = React.useState<string>("");
+  const [loading, data, error, request] = useAxios<ProductData>({
     method: "GET",
-    url: ApiRoutes.Product,
+    url: searchText
+      ? `${ApiRoutes.ProductSearch}?q=${searchText}`
+      : ApiRoutes.Product,
   });
+
+  function handleSortByPrice() {
+    const direction = sortDirection === "asc" ? "desc" : "asc";
+    data?.products.sort((a, b) => {
+      if (sortDirection === "asc") {
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+    });
+    setSortDirection(direction);
+  }
+
+  const handleSearch = () => {
+    request();
+  };
 
   if (loading) {
     return <Spinner />;
@@ -33,7 +55,15 @@ const HomePage = ({ navigation }: HomePageProps) => {
       <View style={styles.mainCardContainer}>
         <FlatList
           data={data?.products}
-          ListHeaderComponent={<HomeHeader size={data?.products.length} />}
+          ListHeaderComponent={
+            <HomeHeader
+              handleSortByPrice={handleSortByPrice}
+              handleSearch={handleSearch}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              size={data?.products.length}
+            />
+          }
           contentContainerStyle={styles.flatListContainer}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
@@ -56,7 +86,7 @@ const styles = StyleSheet.create({
     marginTop: 33,
   },
   flatListContainer: {
-    paddingBottom: 32,
+    paddingBottom: 80,
     paddingHorizontal: 22,
   },
 });
