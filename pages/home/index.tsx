@@ -7,8 +7,14 @@ import { useAxios } from "../../hook/useAxios";
 import { ApiRoutes } from "../../api/apiRoutes";
 import { ProductData } from "../../types";
 import { Spinner } from "../../components/spinner";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { StackParamList } from "../../navigators/BottomTabs";
 
-const HomePage = () => {
+type HomePageProps = {
+  navigation: StackNavigationProp<StackParamList, "Home">;
+};
+
+const HomePage = ({ navigation }: HomePageProps) => {
   const [loading, data, error] = useAxios<ProductData>({
     method: "GET",
     url: ApiRoutes.Product,
@@ -30,7 +36,9 @@ const HomePage = () => {
           ListHeaderComponent={<HomeHeader size={data?.products.length} />}
           contentContainerStyle={styles.flatListContainer}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <Card product={item} />}
+          renderItem={({ item }) => (
+            <Card product={item} navigation={navigation} />
+          )}
         />
       </View>
     </SafeAreaView>

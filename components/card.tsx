@@ -1,29 +1,22 @@
 import React from "react";
-import { View, Image, Text, StyleSheet } from "react-native";
+import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Product } from "../types";
+import { truncate } from "../hook/truncate";
+import { calculateDiscountedPrice } from "../hook/discountedPrice";
 
 interface CardProps {
   product: Product;
+  navigation: any;
 }
 
-function calculateDiscountedPrice(product: Product): number {
-  const discountAmount = product.price * (product.discountPercentage / 100);
-  const discountedPrice = product.price - discountAmount;
-  return discountedPrice;
-}
-function truncate(title: string): string {
-  if (title.length > 24) {
-    return title.substring(0, 21) + "...";
-  } else {
-    return title;
-  }
-}
-
-const Card = ({ product }: CardProps) => {
+const Card = ({ product, navigation }: CardProps) => {
   const discountedPrice = calculateDiscountedPrice(product).toFixed();
+  const handleNavigate = () => {
+    navigation.navigate("ProductDetail", { id: product.id });
+  };
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={handleNavigate}>
       <View style={styles.cardImageContainer}>
         <Image
           style={styles.cardImage}
@@ -42,7 +35,7 @@ const Card = ({ product }: CardProps) => {
         <Text style={styles.cardDiscount}>{discountedPrice} TL</Text>
         <Text style={styles.cardPrice}>{product.price} TL</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

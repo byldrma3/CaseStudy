@@ -3,8 +3,16 @@ import CustomTabs from "./components/CustomTabs";
 import HomePage from "../pages/home";
 import FavoritesPage from "../pages/favorites";
 import BasketPage from "../pages/basket";
+import ProductDetailPage from "../pages/productDetail";
 
-const Tab = createBottomTabNavigator();
+export type StackParamList = {
+  Home: undefined;
+  Favorites: undefined;
+  Basket: undefined;
+  ProductDetail: { id: number };
+};
+
+const Tab = createBottomTabNavigator<StackParamList>();
 
 const MyTabs = () => {
   return (
@@ -16,6 +24,7 @@ const MyTabs = () => {
       <Tab.Screen name='Home' component={HomePage} />
       <Tab.Screen name='Favorites' component={FavoritesPage} />
       <Tab.Screen name='Basket' component={BasketPage} />
+      <Tab.Screen name='ProductDetail' component={ProductDetailPage} />
     </Tab.Navigator>
   );
 };

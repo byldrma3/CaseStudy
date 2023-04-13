@@ -18,7 +18,7 @@ function CustomTabs({
 }) {
   return (
     <View style={styles.mainContainer}>
-      {state.routes.map((route: any, index: any) => {
+      {state.routes.slice(0, 3).map((route: any, index: any) => {
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
