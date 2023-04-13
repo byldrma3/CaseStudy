@@ -33,6 +33,7 @@ const HomeHeader = ({
           <Search width={13} height={13} color={"#B9B9B9"} />
           <TextInput
             placeholder='Search Product'
+            autoCapitalize='none'
             style={styles.input}
             value={searchText}
             onChange={(e) => setSearchText(e.nativeEvent.text)}

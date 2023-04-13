@@ -5,7 +5,7 @@ import HomeHeader from "./components/header";
 import Card from "../../components/card";
 import { useAxios } from "../../hook/useAxios";
 import { ApiRoutes } from "../../api/apiRoutes";
-import { ProductData, Product } from "../../types";
+import { ProductData } from "../../types";
 import { Spinner } from "../../components/spinner";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParamList } from "../../navigators/BottomTabs";
