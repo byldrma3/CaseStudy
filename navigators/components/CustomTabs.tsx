@@ -37,7 +37,6 @@ function CustomTabs({
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            // The `merge: true` option makes sure that the params inside the tab screen are preserved
             navigation.navigate({ name: route.name, merge: true });
           }
         };
@@ -95,7 +94,7 @@ function CustomTabs({
                     height={22.5}
                   />
                 )}
-                {isFocused && <Text>{label}</Text>}
+                {isFocused && <Text style={styles.mainItemText}>{label}</Text>}
               </View>
             </Pressable>
           </TouchableOpacity>
@@ -123,5 +122,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 1,
     borderColor: "#333B42",
+  },
+  mainItemText: {
+    fontFamily: "Inter-Regular",
+    fontSize: 12,
   },
 });
