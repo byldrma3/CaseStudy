@@ -6,6 +6,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Home, Heart, ShoppingBag } from "react-native-feather";
+import { useSelector } from "react-redux";
 
 function CustomTabs({
   state,
@@ -16,6 +17,12 @@ function CustomTabs({
   descriptors: any;
   navigation: any;
 }) {
+  const cart = useSelector((state: any) => state.cart);
+  const totalproduct = cart?.products.reduce(
+    (acc: any, item: any) => acc + item.quantity,
+    0
+  );
+  console.log(totalproduct);
   return (
     <View style={styles.mainContainer}>
       {state.routes.slice(0, 3).map((route: any, index: any) => {
@@ -72,6 +79,7 @@ function CustomTabs({
                   alignItems: "center",
                   flex: 1,
                   padding: 15,
+                  position: "relative",
                 }}>
                 {label == "Home" && (
                   <Home
@@ -88,11 +96,18 @@ function CustomTabs({
                   />
                 )}
                 {label == "Basket" && (
-                  <ShoppingBag
-                    stroke={isFocused ? "#000" : "#B0B0B0"}
-                    width={20}
-                    height={22.5}
-                  />
+                  <View>
+                    {totalproduct > 0 && (
+                      <View style={styles.bagContainer}>
+                        <Text style={styles.bagText}>{totalproduct}</Text>
+                      </View>
+                    )}
+                    <ShoppingBag
+                      stroke={isFocused ? "#000" : "#B0B0B0"}
+                      width={20}
+                      height={22.5}
+                    />
+                  </View>
                 )}
                 {isFocused && <Text style={styles.mainItemText}>{label}</Text>}
               </View>
@@ -126,5 +141,22 @@ const styles = StyleSheet.create({
   mainItemText: {
     fontFamily: "Inter-Regular",
     fontSize: 12,
+  },
+  bagContainer: {
+    position: "absolute",
+    top: -10,
+    right: -10,
+    backgroundColor: "#D90000",
+    borderRadius: 10,
+    zIndex: 1,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bagText: {
+    color: "#fff",
+    fontSize: 10,
+    fontFamily: "Inter-Bold",
   },
 });
