@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Product } from "../types";
-import { log } from "react-native-reanimated";
 
 const initialState = {
   products: [] as Product[],

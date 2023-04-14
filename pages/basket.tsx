@@ -18,6 +18,9 @@ interface ProductDetailProps {
 
 const BasketPage = ({ navigation }: ProductDetailProps) => {
   const cart = useSelector((state: any) => state.cart);
+  const handleCheckoutClick = () => {
+    navigation.navigate("Checkout");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -43,7 +46,9 @@ const BasketPage = ({ navigation }: ProductDetailProps) => {
             <Text style={styles.priceText}>{cart?.totalPrice} TL</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.addToCartBtn}>
+        <TouchableOpacity
+          style={styles.addToCartBtn}
+          onPress={handleCheckoutClick}>
           <Text style={styles.btnText}>CHECKOUT</Text>
         </TouchableOpacity>
       </View>

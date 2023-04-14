@@ -22,7 +22,7 @@ function CustomTabs({
     (acc: any, item: any) => acc + item.quantity,
     0
   );
-  console.log(totalproduct);
+
   return (
     <View style={styles.mainContainer}>
       {state.routes.slice(0, 3).map((route: any, index: any) => {

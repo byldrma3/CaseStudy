@@ -4,12 +4,14 @@ import HomePage from "../pages/home";
 import FavoritesPage from "../pages/favorites";
 import BasketPage from "../pages/basket";
 import ProductDetailPage from "../pages/productDetail";
+import CheckoutPage from "../pages/checkout";
 
 export type StackParamList = {
   Home: undefined;
   Favorites: undefined;
   Basket: undefined;
   ProductDetail: { id: number };
+  Checkout: undefined;
 };
 
 const Tab = createBottomTabNavigator<StackParamList>();
@@ -25,6 +27,7 @@ const MyTabs = () => {
       <Tab.Screen name='Favorites' component={FavoritesPage} />
       <Tab.Screen name='Basket' component={BasketPage} />
       <Tab.Screen name='ProductDetail' component={ProductDetailPage} />
+      <Tab.Screen name='Checkout' component={CheckoutPage} />
     </Tab.Navigator>
   );
 };

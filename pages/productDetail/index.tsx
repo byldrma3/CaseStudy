@@ -17,18 +17,29 @@ import { Product } from "../../types";
 import { Spinner } from "../../components/spinner";
 import Carousel from "react-native-reanimated-carousel";
 import { calculateDiscountedPrice } from "../../hook/discountedPrice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../utils/cartReducer";
+import { ChevronLeft, Heart } from "react-native-feather";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../../utils/favoritesReducer";
 
 type DetailScreenRouteProp = RouteProp<StackParamList, "ProductDetail">;
 
 interface ProductDetailProps {
+  navigation: any;
   route: DetailScreenRouteProp;
 }
 
 const { width } = Dimensions.get("window");
 
-const ProductDetailPage = ({ route }: ProductDetailProps) => {
+const ProductDetailPage = ({ navigation, route }: ProductDetailProps) => {
+  const favorites = useSelector((state: any) => state.favorites);
+  const favoritesIds = favorites.favoriteProducts.map(
+    (item: Product) => item.id
+  );
+  const isFavorite = favoritesIds.includes(route.params.id);
   const dispatch = useDispatch();
   const { id } = route.params;
   const [loading, data, error, request] = useAxios<Product>({
@@ -58,9 +69,52 @@ const ProductDetailPage = ({ route }: ProductDetailProps) => {
     return <Text>Hata oluştu</Text>;
   }
 
+  const handleBackClick = () => {
+    navigation.goBack();
+  };
+
+  const handleAddFavoriteClick = () => {
+    const product = data as Product;
+    dispatch(addToFavorites(product));
+  };
+
+  const handleRemoveFavoriteClick = () => {
+    const product = data as Product;
+    dispatch(removeFromFavorites(product.id));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleBackClick}>
+            <ChevronLeft color={"#000"} />
+          </TouchableOpacity>
+          <Text>{data?.title}</Text>
+          {isFavorite ? (
+            <TouchableOpacity
+              style={styles.favoritesHeart}
+              onPress={handleRemoveFavoriteClick}>
+              <Heart
+                width={20}
+                height={20}
+                color={"#D90000"}
+                fill={"#D90000"}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.favoritesHeart}
+              onPress={handleAddFavoriteClick}>
+              <Heart
+                width={20}
+                height={20}
+                color={"#B0B0B0"}
+                fill={"#B0B0B0"}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
         <Carousel
           loop
           width={width}
@@ -128,6 +182,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingTop: 16,
   },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 29,
+    paddingHorizontal: 20,
+  },
   itemHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -172,5 +233,13 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 18,
     fontFamily: "Inter-Bold",
+  },
+  favoritesHeart: {
+    width: 30,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: "#D9D9D9",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
