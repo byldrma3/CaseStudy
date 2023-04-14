@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Product } from "../types";
+import { log } from "react-native-reanimated";
 
 const initialState = {
   products: [] as Product[],
@@ -23,6 +24,19 @@ export const cartSlice = createSlice({
       state.totalPrice += product.price;
     },
     removeFromCart: (state, action) => {
+      const hardDelete = action.payload.type;
+      if (hardDelete === "hard") {
+        const productId = action.payload.id;
+        const existingProductIndex = state.products.findIndex(
+          (p) => p.id === productId
+        );
+        if (existingProductIndex !== -1) {
+          const existingProduct = state.products[existingProductIndex];
+          state.products.splice(existingProductIndex, 1);
+          state.totalPrice -= existingProduct.price * existingProduct.quantity;
+        }
+        return;
+      }
       const productId = action.payload;
       const existingProduct = state.products.find((p) => p.id === productId);
       if (existingProduct) {

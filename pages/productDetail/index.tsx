@@ -17,7 +17,7 @@ import { Product } from "../../types";
 import { Spinner } from "../../components/spinner";
 import Carousel from "react-native-reanimated-carousel";
 import { calculateDiscountedPrice } from "../../hook/discountedPrice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../utils/cartReducer";
 
 type DetailScreenRouteProp = RouteProp<StackParamList, "ProductDetail">;
